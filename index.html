@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10102b">
+<meta name="description" content="Diamond Rewards Pro demo app">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.svg" type="image/svg+xml">
+<title>Diamond Rewards Pro</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{color-scheme:dark}
+body{
+  font-family:Arial,sans-serif;
+  background:#0b0b1b;color:#f7f7ff;
+  min-height:100vh;padding:20px 16px 35px;
+}
+.app{max-width:440px;margin:auto}
+header{display:flex;align-items:center;gap:12px;margin:8px 0 24px}
+.logo{
+  width:48px;height:48px;border-radius:16px;
+  display:grid;place-items:center;font-size:26px;
+  background:linear-gradient(135deg,#8057ff,#28d7ff);
+  box-shadow:0 5px 25px #7354ff44
+}
+h1{font-size:19px}
+.sub{font-size:12px;color:#aaa9c7;margin-top:4px}
+.tag{
+  margin-left:auto;font-size:10px;padding:7px 9px;
+  border:1px solid #3a3761;border-radius:20px;color:#c6bbff
+}
+.card{
+  background:linear-gradient(145deg,#211b48,#14142b 75%);
+  border:1px solid #39325f;border-radius:25px;padding:22px;
+  margin-bottom:17px;box-shadow:0 12px 32px #0002
+}
+.eyebrow{font-size:12px;color:#b7b3d5}
+.balance{display:flex;align-items:center;gap:12px;margin:13px 0}
+.gem{font-size:38px}
+.amount{font-size:34px;font-weight:800;letter-spacing:-1px}
+.small{font-size:12px;color:#aaa9c7;margin-top:5px}
+.progress-bg{height:8px;background:#343151;border-radius:20px;overflow:hidden;margin:15px 0 9px}
+.progress{height:100%;width:0;background:linear-gradient(90deg,#9c6bff,#36d9ff);border-radius:20px;transition:width .2s}
+.progress-row{display:flex;justify-content:space-between;font-size:11px;color:#c7c3df}
+h2{font-size:16px;margin-bottom:7px}
+p{line-height:1.5}
+.muted{font-size:12px;color:#aaa9c7}
+.primary{
+  width:100%;border:0;border-radius:15px;padding:16px;
+  background:linear-gradient(100deg,#8d5bff,#4c8dff);
+  color:white;font-size:15px;font-weight:700;cursor:pointer;
+  margin-top:17px;box-shadow:0 8px 22px #7553ff25
+}
+.primary:active{transform:scale(.985)}
+.primary:disabled{opacity:.5;cursor:default}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{padding:17px;border-radius:18px;background:#17172c;border:1px solid #292842}
+.stat-icon{font-size:22px;margin-bottom:12px}
+.stat-value{font-size:23px;font-weight:800;margin-top:7px}
+.section-title{font-size:17px;margin:24px 0 13px}
+.task{display:flex;align-items:center;gap:13px;padding:15px 0}
+.task-icon{
+  width:43px;height:43px;border-radius:14px;
+  background:#282344;display:grid;place-items:center;font-size:21px
+}
+.task-info{flex:1}
+.task-info strong{font-size:13px}
+.task-info p{font-size:11px;color:#aaa9c7;margin-top:5px}
+.pill{font-size:11px;color:#c5b6ff;background:#292044;padding:8px 10px;border-radius:12px}
+.divider{height:1px;background:#2b2942}
+.notice{font-size:11px;color:#9694b3;text-align:center;line-height:1.7;margin:18px 4px}
+footer{text-align:center;font-size:11px;color:#777593;margin-top:25px}
+</style>
+</head>
+<body>
+<main class="app">
+<header>
+  <div class="logo">💎</div>
+  <div>
+    <h1>Diamond Rewards</h1>
+    <div class="sub">Your daily rewards space</div>
+  </div>
+  <span class="tag">DEMO</span>
+</header>
+
+<section class="card">
+  <div class="eyebrow">YOUR DEMO BALANCE</div>
+  <div class="balance">
+    <div class="gem">💎</div>
+    <div>
+      <div class="amount" id="balance">0</div>
+      <div class="small">Demo points · No cash value</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div style="margin-top:17px" class="progress-row">
+    <span>Tap challenge</span><span id="progressText">0 / 200</span>
+  </div>
+  <div class="progress-bg">
+    <div class="progress" id="progressBar"></div>
+  </div>
+  <button class="primary" id="tapBtn">💎 Tap to Earn Demo Points</button>
+  <p class="muted" style="margin-top:12px;text-align:center">
+    Tap 200 times to complete this demo challenge.
+  </p>
+</section>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-icon">⚡</div>
+    <div class="muted">Total taps</div>
+    <div class="stat-value" id="totalTaps">0</div>
+  </div>
+  <div class="stat">
+    <div class="stat-icon">🎁</div>
+    <div class="muted">Daily check-in</div>
+    <div class="stat-value" id="checkStatus" style="font-size:17px">Available</div>
+  </div>
+</div>
+
+<h2 class="section-title">Daily rewards</h2>
+<section class="card">
+  <div class="task">
+    <div class="task-icon">🌞</div>
+    <div class="task-info">
+      <strong>Daily check-in</strong>
+      <p>Collect 10 demo points once a day</p>
+    </div>
+    <span class="pill" id="checkPill">+10</span>
+  </div>
+  <div class="divider"></div>
+  <button class="primary" id="checkBtn" style="margin-top:15px">
+    Claim Daily Demo Points
+  </button>
+</section>
+
+<h2 class="section-title">Your progress</h2>
+<section class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+    <div>
+      <strong>🏆 Tap challenge</strong>
+      <p class="muted" style="margin-top:7px">Reach 200 taps in this demo.</p>
+    </div>
+    <div style="font-size:23px" id="trophy">🔒</div>
+  </div>
+  <p id="challengeMsg" class="muted" style="margin-top:14px">
+    Keep going — your progress is saved on this device.
+  </p>
+</section>
+
+<p class="notice">
+  DEMO ONLY: Points are stored on this device and have no monetary
+  or game-currency value. They cannot be redeemed or transferred.
+  Clearing browser data may reset your progress.
+</p>
+<footer>Diamond Rewards Pro · Demo Version 1.0</footer>
+</main>
+
+<script>
+const KEY = "diamondRewardsDemoV1";
+const $ = id => document.getElementById(id);
+
+function todayKey(){
+  const d = new Date();
+  return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if(s && typeof s.points === "number" &&
+       typeof s.taps === "number"){
+      return {
+        points:Math.max(0,s.points),
+        taps:Math.min(200,Math.max(0,s.taps)),
+        checkDate:typeof s.checkDate==="string"?s.checkDate:""
+      };
+    }
+  }catch(e){}
+  return {points:0,taps:0,checkDate:""};
+}
+let state = load();
+
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(state));
+  render();
+}
+function render(){
+  $("balance").textContent=state.points.toLocaleString();
+  $("totalTaps").textContent=state.taps;
+  $("progressText").textContent=state.taps+" / 200";
+  $("progressBar").style.width=(state.taps/200*100)+"%";
+  $("tapBtn").disabled=state.taps>=200;
+  $("tapBtn").textContent=state.taps>=200
+    ?"✓ Demo Challenge Complete":"💎 Tap to Earn Demo Points";
+  $("trophy").textContent=state.taps>=200?"🏆":"🔒";
+  $("challengeMsg").textContent=state.taps>=200
+    ?"You completed the demo challenge!":"Keep going — your progress is saved on this device.";
+  const claimed=state.checkDate===todayKey();
+  $("checkStatus").textContent=claimed?"Claimed":"Available";
+  $("checkPill").textContent=claimed?"✓ Done":"+10";
+  $("checkBtn").disabled=claimed;
+  $("checkBtn").textContent=claimed
+    ?"✓ Already Claimed Today":"Claim Daily Demo Points";
+}
+$("tapBtn").addEventListener("click",()=>{
+  if(state.taps>=200)return;
+  state.taps++;
+  state.points++;
+  save();
+});
+$("checkBtn").addEventListener("click",()=>{
+  if(state.checkDate===todayKey())return;
+  state.checkDate=todayKey();
+  state.points+=10;
+  save();
+});
+render();
+
+// Register offline support when served from HTTPS or localhost.
+if("serviceWorker" in navigator &&
+   (location.protocol==="https:" || location.hostname==="localhost" ||
+    location.hostname==="127.0.0.1")){
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.register("./sw.js").catch(console.error);
+  });
+}
+</script>
+</body>
+</html>
